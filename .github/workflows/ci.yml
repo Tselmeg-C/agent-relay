@@ -68,6 +68,9 @@ jobs:
       - name: Build Docker image
         run: docker build -t "$IMAGE_NAME:${{ steps.image.outputs.tag }}" .
 
+      - name: Ensure kind cluster exists
+        run: kind get clusters | grep -qx "$KIND_CLUSTER" || kind create cluster --name "$KIND_CLUSTER"
+
       - name: Load image into kind
         run: kind load docker-image "$IMAGE_NAME:${{ steps.image.outputs.tag }}" --name "$KIND_CLUSTER"
 
@@ -78,4 +81,4 @@ jobs:
         run: kubectl set image deployment/agent-relay agent-relay="$IMAGE_NAME:${{ steps.image.outputs.tag }}"
 
       - name: Wait for rollout
-        run: kubectl rollout status deployment/agent-relay --timeout=180s
+        run: kubectl rollout status deployment/agent-relay --timeout=300s
