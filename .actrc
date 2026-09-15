@@ -1,0 +1,4 @@
+--network host
+--container-options -v /usr/local/bin/kind:/usr/local/bin/kind -v /usr/local/bin/kubectl:/usr/local/bin/kubectl -v /home/codespace/.kube:/root/.kube
+--env KUBECONFIG=/root/.kube/config
+-P ubuntu-latest=catthehacker/ubuntu:act-latest
